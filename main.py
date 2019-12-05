@@ -9,9 +9,7 @@ def mainMenu():
 		print(" |      <>------<>       EXIT        <>------<>      | ")
 		print(" *\_________________________________________________/* ")
 		print("")
-
 		userOption = int(input("Choose an option: "))
-	
 		if(userOption == 1):
 			print("One player mode running ...")
 		elif(userOption == 2):

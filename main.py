@@ -1,4 +1,5 @@
 import random
+import numpy
 
 def mainMenu():
 	running = True
@@ -37,10 +38,10 @@ def gameThread(player_one, player_two):
 	turn = 0
 	while(running):
 		print(">< Player",turn,"><",end="\n\r\n\r")
-		print(player_one)
-		print(player_two)
-		players_list[nextTurn(turn)].tryShot(players_list[turn].shot())
-		if(players_list[nextTurn(turn)].isAlive() == False):
+		print(player_one.showValues(turn))
+		print(player_two.showValues(turn))
+		players_list[nextTurn(turn)].tryShot(players_list[turn].shot(),turn)
+		if(players_list[nextTurn(turn)].isAlive(turn) == False):
 			running = False
 			print("Player",turn,"wins!")
 		else:
@@ -50,17 +51,23 @@ def nextTurn(turn):
 		
 #----------------------- PLAYER CLASS ---------------------------------------------------
 class Player(object):
-	numbers = []
+	numbers = numpy.empty(shape=[0,0],dtype=int)
 	def __init__(self):
 		print("Human Player created ...")
 	@classmethod
-	def tryShot(self, number):
+	def tryShot(self, number,turn):
 		if number in self.numbers:
-			self.numbers[self.numbers.index(number)] = -1
+			hittedNums = numpy.where(self.numbers == number)
+			for i in hittedNums[turn][1:]:
+				self.numbers[turn][i] = -1
 			print("\n\r... HITTED!\n\r")
 	@classmethod
-	def isAlive(self):
-		return self.numbers.count(-1)!=5
+	def isAlive(self, turn):
+		cont = 0
+		for i in self.numbers[turn]:
+			if i == -1:
+				cont+=1
+		return cont!=5
 	@classmethod
 	def shot(self):
 		try:
@@ -71,10 +78,10 @@ class Player(object):
 		finally:
 			return shot
 	@classmethod
-	def __str__(self):
+	def showValues(self,turn):
 		ocult_values = "["
 		for x in range(5):
-			if self.numbers[x]==-1:
+			if self.numbers[turn][x]==-1:
 				ocult_values = ocult_values + " X"
 			else:
 				ocult_values = ocult_values + " ?"
@@ -82,7 +89,7 @@ class Player(object):
 		return ocult_values
 	@classmethod
 	def reload(self):
-		self.numbers = random.sample(range(10),5)
+		self.numbers = numpy.random.randint(1,10,size=(2,5))
 #----------------------------------------------------------------------------------------
 #------------------------ PLAYER-AI CLASS ------------------------------------------------
 class PlayerAI(object):
@@ -91,12 +98,12 @@ class PlayerAI(object):
 	def __init__(self):
 		print("AI Player created ...")
 	@classmethod
-	def tryShot(self, number):
+	def tryShot(self, number,turn):
 		if number in self.numbers:
 			self.numbers[self.numbers.index(number)] = -1
 			print("\n\r... HITTED!\n\r")
 	@classmethod
-	def isAlive(self):
+	def isAlive(self,turn):
 		return self.numbers.count(-1)!=5
 	@classmethod
 	def shot(self):
@@ -108,7 +115,7 @@ class PlayerAI(object):
 		print(shot)
 		return shot
 	@classmethod
-	def __str__(self):
+	def showValues(self,turn):
 		ocult_values = "["
 		for x in range(5):
 			if self.numbers[x]==-1:

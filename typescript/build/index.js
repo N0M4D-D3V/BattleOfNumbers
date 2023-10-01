@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hello = void 0;
-const world = 'world';
-function hello(who = world) {
-    return `Hello ${who}! `;
-}
-exports.hello = hello;
-console.log(hello());
+const io_service_1 = require("./utils/io.service");
+const io = new io_service_1.IOService();
+io.ask("Hola, como te llamas?").then((res) => {
+    console.log("Encantado de conocerte, ", res);
+});

@@ -1,7 +1,6 @@
-const world = 'world';
+import { IOService } from "./utils/io.service";
 
-export function hello(who: string = world): string {
-  return `Hello ${who}! `;
-}
-
-console.log(hello());
+const io = new IOService();
+io.ask("Hola, como te llamas?").then((res) => {
+  console.log("Encantado de conocerte, ", res);
+});

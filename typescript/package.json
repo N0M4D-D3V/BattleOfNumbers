@@ -1,0 +1,17 @@
+{
+  "name": "battle-of-numbers",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "tsc && node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+  }
+}
